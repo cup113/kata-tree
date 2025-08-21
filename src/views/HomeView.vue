@@ -18,6 +18,15 @@ const handleAddKata = () => {
   }
 };
 
+const handleConfirm = () => {
+  kataStore.setCreatingKata(true);
+  kataStore.setConfirmingMultiple(false);
+};
+
+const handleCancel = () => {
+  kataStore.setConfirmingMultiple(false);
+}
+
 </script>
 
 <template>
@@ -34,6 +43,6 @@ const handleAddKata = () => {
       <KataTree />
       <KataCreateForm v-show="kataStore.stateUI.creatingKata" />
     </main>
-    <ConfirmationDialog />
+    <ConfirmationDialog @confirm="handleConfirm" @cancel="handleCancel" />
   </div>
 </template>
