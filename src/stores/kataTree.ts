@@ -22,23 +22,22 @@ export const useKataTreeStore = defineStore('kataTree', () => {
   const state = useLocalStorage<KataTreeState>('KTT_tree_state', {
     rootKata: DEFAULT_ROOT_KATA,
     currentStreak: 0,
-    lastVerificationDate: null,
+    lastVerification: null,
+    lastKataCreation: null,
     todayVerified: false,
     currentNumber: 1,
     katasCreatedToday: 0,
-    lastKataCreationDate: null,
-    selectedKataId: undefined as string | undefined,
   });
   const stateUI = reactive({
     confirmingAddMultiple: false,
     creatingKata: false,
+    selectedParentId: null as null | string,
   });
 
   const rootKata = computed(() => state.value.rootKata);
   const currentStreak = computed(() => state.value.currentStreak);
   const todayVerified = computed(() => state.value.todayVerified);
   const katasCreatedToday = computed(() => state.value.katasCreatedToday);
-  const selectedKataId = computed(() => state.value.selectedKataId);
   const currentNumber = computed(() => state.value.currentNumber);
 
   function getToday(): string {
@@ -67,17 +66,16 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     };
 
     parent.children.push(newKata);
-        state.value.currentNumber += 1;
+    state.value.currentNumber += 1;
     const today = getToday();
-    const lastCreation = state.value.lastKataCreationDate;
 
-    if (getDate(lastCreation) === today) {
+    if (getDate(state.value.lastVerification) === today) {
       state.value.katasCreatedToday += 1;
     } else {
       state.value.katasCreatedToday = 1;
     }
 
-    state.value.lastKataCreationDate = getToday();
+    state.value.lastVerification = dayjs().toISOString();
     return true;
   }
 
@@ -140,7 +138,7 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     }
 
     state.value.todayVerified = true;
-    state.value.lastVerificationDate = dayjs().toISOString();
+    state.value.lastVerification = dayjs().toISOString();
 
     return allCompleted;
   }
@@ -151,7 +149,7 @@ export const useKataTreeStore = defineStore('kataTree', () => {
 
   function resetDailyVerification() {
     const today = getToday();
-    const lastVerification = state.value.lastVerificationDate;
+    const lastVerification = state.value.lastVerification;
 
     if (getDate(lastVerification) !== today) {
       state.value.todayVerified = false;
@@ -162,9 +160,8 @@ export const useKataTreeStore = defineStore('kataTree', () => {
 
   function resetDailyKataCreation() {
     const today = getToday();
-    const lastCreation = state.value.lastKataCreationDate;
 
-    if (getDate(lastCreation) !== today) {
+    if (getDate(state.value.lastKataCreation) !== today) {
       state.value.katasCreatedToday = 0;
     }
   }
@@ -179,8 +176,8 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     return true;
   }
 
-  function setSelectedKataId(kataId: string | undefined) {
-    state.value.selectedKataId = kataId;
+  function selectParent(kataId: string | null) {
+    stateUI.selectedParentId = kataId;
   }
 
   function setCreatingKata(adding: boolean) {
@@ -197,7 +194,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     currentStreak,
     todayVerified,
     katasCreatedToday,
-    selectedKataId,
     stateUI,
     currentNumber,
     addKata,
@@ -207,7 +203,7 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     resetDailyVerification,
     resetDailyKataCreation,
     editKata,
-    setSelectedKataId,
+    selectParent,
     setConfirmingMultiple,
     setCreatingKata,
   };

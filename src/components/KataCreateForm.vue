@@ -25,7 +25,7 @@ defineProps<{}>();
 
 const kataStore = useKataTreeStore();
 
-const selectedParentId = computed(() => kataStore.selectedKataId);
+const selectedParentId = computed(() => kataStore.stateUI.selectedParentId);
 
 const initialData = computed(() => ({
   number: kataStore.currentNumber.toString().padStart(3, '0'),
@@ -47,7 +47,7 @@ const handleSubmit = (data: any) => {
 
   if (success) {
     kataStore.setCreatingKata(false);
-    kataStore.setSelectedKataId(undefined);
+    kataStore.selectParent(null);
   }
 };
 

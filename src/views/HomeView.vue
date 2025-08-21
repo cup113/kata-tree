@@ -9,8 +9,6 @@ import { Button } from '@/components/ui/button';
 const kataStore = useKataTreeStore();
 
 const handleAddKata = () => {
-  if (!kataStore.selectedKataId) return;
-
   if (kataStore.katasCreatedToday > 0) {
     kataStore.setConfirmingMultiple(true);
   } else {
@@ -33,7 +31,7 @@ const handleCancel = () => {
   <div>
     <div class="flex justify-center py-4 gap-2">
       <Button @click="handleAddKata" variant="default"
-        :disabled="!kataStore.selectedKataId || !kataStore.todayVerified">
+        :disabled="!kataStore.stateUI.selectedParentId || !kataStore.todayVerified">
         添加子定式
       </Button>
       <DailyVerification />

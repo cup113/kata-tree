@@ -38,9 +38,9 @@ interface Props {
 const props = defineProps<Props>();
 const kataStore = useKataTreeStore();
 
-const isSelected = computed(() => props.kata.id === kataStore.selectedKataId);
+const isSelected = computed(() => props.kata.id === kataStore.stateUI.selectedParentId);
 
 const selectKata = () => {
-  kataStore.setSelectedKataId(props.kata.id);
+  kataStore.selectParent(props.kata.id);
 };
 </script>
