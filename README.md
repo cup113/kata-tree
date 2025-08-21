@@ -1,32 +1,39 @@
-# kata-tree
+# Kata Tree / 定式树
 
-This template should help get you started developing with Vue 3 in Vite.
+一个基于树形结构的定式追踪系统，帮助建立和维持日常习惯。
 
-## Recommended IDE Setup
+## 功能
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **树形结构管理**：以父子关系组织定式，形成完整的习惯体系
+- **每日验证**：每天验证所有定式的完成情况，维持连续天数
+- **进度追踪**：实时显示连续天数和今日验证状态
+- **本地存储**：数据保存在浏览器本地，无需服务器
 
-## Type Support for `.vue` Imports in TS
+## 技术栈
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- Vue 3 + TypeScript
+- Pinia 状态管理
+- Tailwind CSS + shadcn-vue
+- Vue Router
 
-## Customize configuration
+## 开始使用
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+```bash
 pnpm install
+pnpm dev
 ```
 
-### Compile and Hot-Reload for Development
+## 灵感来源
+
+项目灵感来源于知乎问题「如何提高自制力？」下的回答：<https://www.zhihu.com/question/19888447/answer/1930799480401293785>
+
+核心思想是通过树形结构的定式系统，将大目标分解为可执行的小步骤，并通过每日验证机制建立持续的习惯养成体系。
+
+## 开发与构建脚本
 
 ```sh
 pnpm dev
 ```
-
-### Type-Check, Compile and Minify for Production
 
 ```sh
 pnpm build
