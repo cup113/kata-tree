@@ -1,12 +1,15 @@
 <template>
-  <Card class="w-full max-w-2xl">
-    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle class="text-lg font-semibold">每日验证</CardTitle>
-      <Badge :class="[todayVerified ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800']">
-        {{ todayVerified ? '今日已验证' : '待验证' }}
-      </Badge>
-    </CardHeader>
-    <CardContent>
+  <AlertDialog>
+    <AlertDialogTrigger>
+      <Button variant="secondary" :disabled="kataStore.todayVerified">
+        验证今日定式
+      </Button>
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle class="text-lg font-semibold">每日验证</AlertDialogTitle>
+        <AlertDialogCancel class="absolute right-4 top-4"><DeleteIcon class="text-red-600" /></AlertDialogCancel>
+      </AlertDialogHeader>
       <div v-if="!todayVerified" class="space-y-6">
         <div class="bg-muted/50 p-4 rounded-lg">
           <p class="text-sm text-muted-foreground mb-3">请验证您今天是否完成了所有定式：</p>
@@ -33,7 +36,7 @@
                 :class="['bg-green-600 text-white hover:bg-green-700', { 'opacity-50': kata.completed }]" size="sm">
                 ✓ 完成
               </Button>
-              <Button @click="showFailureOptions(kata)" :disabled="kata.completed" 
+              <Button @click="showFailureOptions(kata)" :disabled="kata.completed"
                 class="bg-red-600 text-white hover:bg-red-700" size="sm">
                 ✗ 未完成
               </Button>
@@ -51,10 +54,12 @@
 
       <div v-else class="text-center py-8">
         <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <span class="text-2xl text-green-600">✓</span>
+          <span class="text-2xl text-green-600">
+            <CheckIcon />
+          </span>
         </div>
         <h4 class="text-xl font-semibold mb-2">今日验证完成</h4>
-        <p class="text-muted-foreground mb-1">恭喜！您已连续{{ currentStreak }}天完成所有定式。</p>
+        <p class="text-muted-foreground mb-1">恭喜！您已连续 <strong>{{ currentStreak }}</strong> 天完成所有定式。</p>
         <p class="text-muted-foreground">明天请继续努力！</p>
       </div>
 
@@ -103,19 +108,20 @@
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </CardContent>
-  </Card>
+    </AlertDialogContent>
+  </AlertDialog>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useKataTreeStore } from '@/stores/kataTree';
 import type { Kata } from '@/types/kata';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogHeader, AlertDialogTitle, AlertDialogContent, AlertDialogTrigger, AlertDialogAction, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { DeleteIcon, CheckIcon } from 'lucide-vue-next';
 
 const kataStore = useKataTreeStore();
 

@@ -12,16 +12,12 @@ export interface Kata {
 }
 
 export interface KataTreeState {
-  rootKata: Kata | null;
+  rootKata: Kata;
   currentStreak: number;
   lastVerificationDate: string | null;
   todayVerified: boolean;
+  currentNumber: number;
   katasCreatedToday: number;
   lastKataCreationDate: string | null;
   selectedKataId: string | undefined;
-  showAddForm: boolean;
-  showEditForm: boolean;
-  showVerification: boolean;
-  showConfirmation: boolean;
-  editingKata: Kata | null;
 }
