@@ -2,6 +2,7 @@
   <AlertDialog>
     <AlertDialogTrigger>
       <Button variant="secondary" :disabled="kataStore.todayVerified">
+        <VerifiedIcon />
         验证今日定式
       </Button>
     </AlertDialogTrigger>
@@ -120,8 +121,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogHeader, AlertDialogTitle, AlertDialogContent, AlertDialogTrigger, AlertDialogAction, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
-import { DeleteIcon, CheckIcon } from 'lucide-vue-next';
+import { AlertDialog, AlertDialogHeader, AlertDialogTitle, AlertDialogContent, AlertDialogTrigger, AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { DeleteIcon, CheckIcon, VerifiedIcon } from 'lucide-vue-next';
 
 const kataStore = useKataTreeStore();
 

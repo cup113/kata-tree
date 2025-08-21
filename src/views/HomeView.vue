@@ -2,9 +2,11 @@
 import KataTree from '@/components/KataTree.vue';
 import KataCreateForm from '@/components/KataCreateForm.vue';
 import DailyVerification from '@/components/DailyVerification.vue';
+import BackupButton from '@/components/BackupButton.vue';
 import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
 import { useKataTreeStore } from '@/stores/kataTree';
 import { Button } from '@/components/ui/button';
+import { PlusIcon } from 'lucide-vue-next';
 
 const kataStore = useKataTreeStore();
 
@@ -32,9 +34,11 @@ const handleCancel = () => {
     <div class="flex justify-center py-4 gap-2">
       <Button @click="handleAddKata" variant="default"
         :disabled="!kataStore.stateUI.selectedParentId || !kataStore.todayVerified">
+        <PlusIcon />
         添加子定式
       </Button>
       <DailyVerification />
+      <BackupButton />
     </div>
 
     <main class="mx-auto w-xs md:w-md lg:w-xl flex flex-col gap-4 items-center">

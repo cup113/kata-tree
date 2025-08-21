@@ -188,6 +188,26 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     stateUI.confirmingAddMultiple = confirming;
   }
 
+  function backupData() {
+    const backupData = {
+      state: state.value,
+      preferences: preferences.value,
+      timestamp: dayjs().toISOString(),
+    };
+
+    const dataStr = JSON.stringify(backupData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `kata-tree-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
+
   return {
     state,
     rootKata,
@@ -206,5 +226,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     selectParent,
     setConfirmingMultiple,
     setCreatingKata,
+    backupData,
   };
 });
