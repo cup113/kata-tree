@@ -11,7 +11,7 @@
       </div>
       <div class="text-sm text-muted-foreground mb-2">{{ kata.description }}</div>
       <div class="flex flex-wrap gap-1 text-sm items-center" v-if="kata.exceptions.length > 0">
-        <span class="font-bold text-xs text-gray-500">例外情况</span>
+        <span class="font-bold text-xs text-gray-500">除非</span>
         <Badge v-for="(exception, index) in kata.exceptions" :key="index" variant="secondary">
           {{ exception }}
         </Badge>
