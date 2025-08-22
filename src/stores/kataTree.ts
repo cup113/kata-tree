@@ -13,7 +13,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     description: '每天添加至少一个定式',
     exceptions: [],
     streak: 0,
-    completed: false,
     children: [],
   };
   const preferences = useLocalStorage('KTT_pref', {
@@ -61,7 +60,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
       id: nanoid(),
       children: [],
       streak: 0,
-      completed: false,
     };
 
     parent.children.push(newKata);
@@ -104,18 +102,14 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     }
 
     if (completed) {
-      kata.completed = true;
       kata.lastCompleted = dayjs().toISOString();
       kata.streak += 1;
     } else if (exception) {
       kata.exceptions.push(exception);
-      kata.completed = true;
       kata.lastCompleted = dayjs().toISOString();
       kata.streak += 1;
     } else {
       removeChildren(kata);
-      kata.completed = false;
-      kata.streak = 0;
     }
 
     return true;
@@ -141,8 +135,12 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     return allCompleted;
   }
 
+  function isKataCompleted(kata: Kata): boolean {
+    return getDate(kata.lastCompleted ?? null) === getToday();
+  }
+
   function checkAllKatasCompleted(kata: Kata): boolean {
-    return kata.completed && kata.children.every(child => checkAllKatasCompleted(child));
+    return isKataCompleted(kata) && kata.children.every(child => checkAllKatasCompleted(child));
   }
 
   function editKata(kataId: string, kataData: Partial<Kata>) {
@@ -195,6 +193,7 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     katasCreatedToday,
     stateUI,
     currentNumber,
+    isKataCompleted,
     addKata,
     findKataById,
     verifyKata,

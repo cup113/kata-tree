@@ -124,6 +124,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { AlertDialog, AlertDialogHeader, AlertDialogTitle, AlertDialogContent, AlertDialogTrigger, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { DeleteIcon, CheckIcon, VerifiedIcon } from 'lucide-vue-next';
 
+interface ExtendedKata extends Kata {
+  completed: boolean;
+}
+
 const kataStore = useKataTreeStore();
 
 const todayVerified = computed(() => kataStore.todayVerified);
@@ -134,11 +138,14 @@ const selectedKata = ref<Kata | null>(null);
 const exceptionInput = ref('');
 
 const allKatas = computed(() => {
-  const katas: Kata[] = [];
+  const katas: ExtendedKata[] = [];
 
   function collectKatas(kata: Kata | null) {
     if (!kata) return;
-    katas.push(kata);
+    katas.push({
+      ...kata,
+      completed: kataStore.isKataCompleted(kata),
+    });
     kata.children.forEach(child => collectKatas(child));
   }
 

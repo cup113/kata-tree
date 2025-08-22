@@ -5,7 +5,6 @@ export interface Kata {
   description: string;
   exceptions: string[];
   streak: number;
-  completed: boolean;
   lastCompleted?: string;
   children: Kata[];
   parentId?: string;
