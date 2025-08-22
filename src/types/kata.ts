@@ -16,7 +16,6 @@ export interface KataTreeState {
   currentStreak: number;
   lastVerification: string | null;
   lastKataCreation: string | null;
-  todayVerified: boolean;
   currentNumber: number;
   katasCreatedToday: number;
 }

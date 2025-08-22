@@ -1,7 +1,7 @@
 <template>
   <AlertDialog>
     <AlertDialogTrigger>
-      <Button variant="secondary" :disabled="kataStore.todayVerified">
+      <Button variant="secondary" :disabled="todayVerified">
         <VerifiedIcon />
         验证今日定式
       </Button>

@@ -24,11 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { computed } from 'vue';
 import { useKataTreeStore } from '@/stores/kataTree';
 import KataTreeNode from './KataTreeNode.vue';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 
 defineProps<{}>();
 
@@ -37,8 +36,4 @@ const kataStore = useKataTreeStore();
 const rootKata = computed(() => kataStore.rootKata);
 const currentStreak = computed(() => kataStore.currentStreak);
 const todayVerified = computed(() => kataStore.todayVerified);
-
-onMounted(() => {
-  kataStore.resetDailyVerification();
-});
 </script>
