@@ -1,5 +1,5 @@
 <template>
-  <Dialog :open="store.stateUI.confirmingAddMultiple">
+  <Dialog :open="store.stateUI.confirmingAddMultiple" @update:open="store.setConfirmingMultiple($event)">
     <DialogContent class="sm:max-w-md">
       <DialogHeader>
         <DialogTitle class="text-lg font-semibold">确认创建多个定式</DialogTitle>

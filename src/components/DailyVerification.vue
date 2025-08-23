@@ -9,6 +9,9 @@
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle class="text-lg font-semibold">每日验证</AlertDialogTitle>
+        <AlertDialogCancel class="absolute right-4 top-4">
+          <DeleteIcon class="text-red-600" />
+        </AlertDialogCancel>
       </AlertDialogHeader>
       <div v-if="!todayVerified" class="space-y-6">
         <div class="bg-muted/50 p-4 rounded-lg">
