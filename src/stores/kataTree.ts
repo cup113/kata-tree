@@ -20,7 +20,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
   });
   const state = useLocalStorage<KataTreeState>('KTT_tree_state', {
     rootKata: DEFAULT_ROOT_KATA,
-    currentStreak: 0,
     lastVerification: null,
     lastKataCreation: null,
     currentNumber: 1,
@@ -33,7 +32,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
   });
 
   const rootKata = computed(() => state.value.rootKata);
-  const currentStreak = computed(() => state.value.currentStreak);
   const todayVerified = computed(() => getDate(state.value.lastVerification) === getToday());
   const katasCreatedToday = computed(() => state.value.katasCreatedToday);
   const currentNumber = computed(() => state.value.currentNumber);
@@ -78,9 +76,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
 
   function findKataById(id: string, _kata?: Kata): Kata | null {
     const kata = _kata ?? rootKata.value;
-    if (!kata) {
-      return null;
-    }
     if (kata.id === id) {
       return kata;
     }
@@ -89,6 +84,21 @@ export const useKataTreeStore = defineStore('kataTree', () => {
       const found = findKataById(id, child);
       if (found) {
         return found;
+      }
+    }
+
+    return null;
+  }
+
+  function findParentKataById(id: string, _kata?: Kata): Kata | null {
+    const kata = _kata ?? rootKata.value;
+    if (kata.children.some(child => child.id === id)) {
+      return kata;
+    }
+    for (const child of kata.children) {
+      const result = findParentKataById(id, child);
+      if (result !== null) {
+        return result;
       }
     }
 
@@ -122,25 +132,11 @@ export const useKataTreeStore = defineStore('kataTree', () => {
   function verifyAllKatas() {
     if (!state.value.rootKata) return false;
 
-    const allCompleted = checkAllKatasCompleted(state.value.rootKata);
-
-    if (allCompleted) {
-      state.value.currentStreak += 1;
-    } else {
-      state.value.currentStreak = 0;
-    }
-
     state.value.lastVerification = dayjs().toISOString();
-
-    return allCompleted;
   }
 
   function isKataCompleted(kata: Kata): boolean {
     return getDate(kata.lastCompleted ?? null) === getToday();
-  }
-
-  function checkAllKatasCompleted(kata: Kata): boolean {
-    return isKataCompleted(kata) && kata.children.every(child => checkAllKatasCompleted(child));
   }
 
   function editKata(kataId: string, kataData: Partial<Kata>) {
@@ -151,6 +147,16 @@ export const useKataTreeStore = defineStore('kataTree', () => {
 
     Object.assign(kata, kataData);
     return true;
+  }
+
+  function removeKata(kataId: string) {
+    const parent = findParentKataById(kataId);
+    if (!parent) {
+      alert("不能删除根节点");
+      return;
+    }
+    const index = parent.children.findIndex(child => child.id === kataId);
+    parent.children.splice(index, 1);
   }
 
   function selectParent(kataId: string | null) {
@@ -188,7 +194,6 @@ export const useKataTreeStore = defineStore('kataTree', () => {
   return {
     state,
     rootKata,
-    currentStreak,
     todayVerified,
     katasCreatedToday,
     stateUI,
@@ -199,6 +204,7 @@ export const useKataTreeStore = defineStore('kataTree', () => {
     verifyKata,
     verifyAllKatas,
     editKata,
+    removeKata,
     selectParent,
     setConfirmingMultiple,
     setCreatingKata,

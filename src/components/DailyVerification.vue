@@ -1,5 +1,5 @@
 <template>
-  <AlertDialog>
+  <AlertDialog class="max-h-screen">
     <AlertDialogTrigger>
       <Button variant="secondary" :disabled="todayVerified">
         <VerifiedIcon />
@@ -62,7 +62,6 @@
           </span>
         </div>
         <h4 class="text-xl font-semibold mb-2">今日验证完成</h4>
-        <p class="text-muted-foreground mb-1">恭喜！您已连续 <strong>{{ currentStreak }}</strong> 天完成所有定式。</p>
         <p class="text-muted-foreground">明天请继续努力！</p>
       </div>
 
@@ -133,7 +132,6 @@ interface ExtendedKata extends Kata {
 const kataStore = useKataTreeStore();
 
 const todayVerified = computed(() => kataStore.todayVerified);
-const currentStreak = computed(() => kataStore.currentStreak);
 
 const showModal = ref(false);
 const selectedKata = ref<Kata | null>(null);
@@ -170,7 +168,7 @@ const showFailureOptions = (kata: Kata) => {
 
 const addException = () => {
   if (selectedKata.value && exceptionInput.value.trim()) {
-    kataStore.verifyKata(selectedKata.value.id, false, exceptionInput.value.trim());
+    kataStore.verifyKata(selectedKata.value.id, true, exceptionInput.value.trim());
     closeModal();
   }
 };
@@ -178,6 +176,7 @@ const addException = () => {
 const removeChildren = () => {
   if (selectedKata.value) {
     kataStore.verifyKata(selectedKata.value.id, false);
+    kataStore.removeKata(selectedKata.value.id);
     closeModal();
   }
 };

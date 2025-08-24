@@ -12,7 +12,6 @@ export interface Kata {
 
 export interface KataTreeState {
   rootKata: Kata;
-  currentStreak: number;
   lastVerification: string | null;
   lastKataCreation: string | null;
   currentNumber: number;
